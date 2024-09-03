@@ -5,11 +5,11 @@ namespace App\Enum;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static Role CLIENT()
- * @method static Role ADMINISTRATOR()
+ * @method static Roles CLIENT()
+ * @method static Roles ADMINISTRATOR()
  */
 
- class Role extends Enum {
+ class Roles extends Enum {
     private const CLIENT = 'Client';
     private const ADMINISTRATOR = 'Administrator';
  }
