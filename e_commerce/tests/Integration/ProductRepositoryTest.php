@@ -54,6 +54,47 @@ class ProductRepositoryTest extends KernelTestCase
         $this->assertEquals('Fruit', $created_model_product->getCategory()->getName());
     }
 
+    public function testGetProduct(): void
+    {
+        $product = $this->em->getRepository(Product::class)->findOneBy(['id' => 1]);
+        $this->assertNotEmpty($product);
+        $this->assertIsObject($product);
+        $this->assertInstanceOf(Product::class, $product);
+    }
+
+    public function testEditProduct() : void 
+    {
+        $date = new DateTime('now');
+
+        $product = $this->em->getRepository(Product::class)->findOneBy(['id' => 1]);
+        $this->assertNotEmpty($product);
+        $this->assertInstanceOf(Product::class, $product);
+
+        if ($product) {
+            $product->setName('Guayaba');
+            $product->setUpdatedAt($date);
+            $this->em->persist($product);
+            $this->em->flush();
+            $product = $this->em->getRepository(Product::class)->findOneBy(['name' => 'Guayaba']);
+            $this->assertNotNull($product);
+            $this->assertEquals('Guayaba', $product->getName());
+
+        }
+    }
+
+    public function testDeleteProduct(): void 
+    {
+        $product = $this->em->getRepository(Product::class)->findOneBy(['id' => 3]);
+        $this->assertNotEmpty($product);
+        $this->assertInstanceOf(Product::class, $product);
+
+        $this->em->remove($product);
+        $this->em->flush();
+
+        $product = $this->em->getRepository(Product::class)->findOneBy(['id' => 3]);
+        $this->assertEmpty($product);
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
